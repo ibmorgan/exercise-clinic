@@ -1,22 +1,28 @@
 package com.ibmorgan.exerciseclinic.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
+@Table(name = "exercises")
 public class Exercise {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     private String name;
     private String description;
 
-    public UUID getId() {
+    @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<PlanExercise> planExercises = new ArrayList<>();
+
+    public long getId() {
         return id;
     }
 
@@ -34,5 +40,13 @@ public class Exercise {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<PlanExercise> getPlanExercises() {
+        return planExercises;
+    }
+
+    public void setPlanExercises(List<PlanExercise> planExercises) {
+        this.planExercises = planExercises;
     }
 }
