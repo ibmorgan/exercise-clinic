@@ -1,8 +1,6 @@
 package com.ibmorgan.exerciseclinic.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.springframework.jmx.export.annotation.ManagedResource;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,8 +16,8 @@ public class Plan {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "plan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "plan")
+    @JsonIgnoreProperties("plan")
     private List<PlanExercise> planExercises = new ArrayList<>();
 
     public Plan() {
@@ -45,11 +43,11 @@ public class Plan {
         this.description = description;
     }
 
-    public List<PlanExercise> getPlanExerciseSet() {
+    public List<PlanExercise> getPlanExercises() {
         return planExercises;
     }
 
-    public void setPlanExerciseSet(List<PlanExercise> planExercises) {
+    public void setPlanExercises(List<PlanExercise> planExercises) {
         this.planExercises = planExercises;
     }
 }

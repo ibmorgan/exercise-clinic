@@ -1,5 +1,6 @@
 package com.ibmorgan.exerciseclinic.controller;
 
+import com.ibmorgan.exerciseclinic.exception.ExerciseNotFoundException;
 import com.ibmorgan.exerciseclinic.exception.PlanNotFoundException;
 import com.ibmorgan.exerciseclinic.model.Plan;
 import com.ibmorgan.exerciseclinic.repository.PlanRepository;
@@ -29,8 +30,8 @@ public class PlanController {
         return repository.save(plan);
     }
 
-    @PatchMapping("/plans/{id}")
-    public Plan update(@PathVariable long id, @RequestBody Plan plan) {
+    @PutMapping("/plans/{id}")
+    public Plan updatePlan(@PathVariable long id, @RequestBody Plan plan) {
         if (repository.findById(id).isPresent()) {
             var existingPlan = repository.findById(id).get();
             existingPlan.setName(plan.getName());
@@ -42,4 +43,13 @@ public class PlanController {
         }
     }
 
+    @DeleteMapping("/plans")
+    public void deletePlan(@PathVariable long id) {
+        if (repository.findById(id).isPresent()) {
+            var exercise = repository.findById(id).get();
+            repository.delete(exercise);
+        } else {
+            throw new ExerciseNotFoundException(id);
+        }
+    }
 }

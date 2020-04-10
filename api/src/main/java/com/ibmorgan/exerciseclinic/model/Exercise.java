@@ -1,11 +1,10 @@
 package com.ibmorgan.exerciseclinic.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "exercises")
@@ -18,8 +17,8 @@ public class Exercise {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "exercise")
+    @JsonBackReference
     private List<PlanExercise> planExercises = new ArrayList<>();
 
     public long getId() {

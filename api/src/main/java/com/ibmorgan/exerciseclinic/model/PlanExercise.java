@@ -1,35 +1,29 @@
 package com.ibmorgan.exerciseclinic.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "plan_exercise")
+@IdClass(PlanExerciseId.class)
 public class PlanExercise {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @ManyToOne(targetEntity = Plan.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "plan_id")
-    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "plan_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("planExercises")
     private Plan plan;
 
-    @ManyToOne(targetEntity = Exercise.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "exercise_id")
-    @JsonBackReference
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "exercise_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("planExercises")
     private Exercise exercise;
 
     private int position;
 
     public PlanExercise() {
-    }
-
-    public long getId() {
-        return id;
     }
 
     public Plan getPlan() {
