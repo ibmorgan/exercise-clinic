@@ -1,6 +1,5 @@
 package com.ibmorgan.exerciseclinic.controller;
 
-import com.ibmorgan.exerciseclinic.exception.ExerciseNotFoundException;
 import com.ibmorgan.exerciseclinic.model.Exercise;
 import com.ibmorgan.exerciseclinic.repository.ExerciseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +22,23 @@ public class ExerciseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Exercise> findExerciseById(@PathVariable long id) {
-        return ResponseEntity.ok(
-                repository.findById(id).orElseThrow(() -> new ExerciseNotFoundException(id)));
+        if (repository.findById(id).isPresent()) {
+            return ResponseEntity.ok(repository.findById(id).get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public Exercise createExercise(@RequestBody Exercise exercise) {
-        return repository.save(exercise);
+    public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
+        return ResponseEntity.ok(repository.save(exercise));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Exercise> updateExercise(@PathVariable long id, @RequestBody Exercise exercise) {
         if (repository.findById(id).isPresent()) {
             return ResponseEntity.ok(repository.save(exercise));
-        } else {
-            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
