@@ -16,6 +16,7 @@ public class Exercise {
 
     private String name;
     private String description;
+    private String videoUrl;
 
     @OneToMany(mappedBy = "exercise")
     @JsonBackReference
@@ -47,5 +48,13 @@ public class Exercise {
 
     public void setPlanExercises(List<PlanExercise> planExercises) {
         this.planExercises = planExercises;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 }

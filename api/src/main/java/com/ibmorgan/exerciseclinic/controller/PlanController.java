@@ -8,18 +8,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("/plans")
 @RestController
 public class PlanController {
 
     @Autowired
     private PlanRepository repository;
 
-    @GetMapping("/plans")
+    @GetMapping
     public ResponseEntity<List<Plan>> findAllPlans() {
         return ResponseEntity.ok((List<Plan>) repository.findAll());
     }
 
-    @GetMapping("/plans/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Plan> findPlanById(@PathVariable long id) {
         if (repository.findById(id).isPresent()) {
             return ResponseEntity.ok(repository.findById(id).get());
@@ -27,12 +28,12 @@ public class PlanController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/plans")
+    @PostMapping
     public ResponseEntity<Plan> createPlan(@RequestBody Plan plan) {
         return ResponseEntity.ok(repository.save(plan));
     }
 
-    @PutMapping("/plans/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Plan> updatePlan(@PathVariable long id, @RequestBody Plan plan) {
         if (repository.findById(id).isPresent()) {
             return ResponseEntity.ok(repository.save(plan));
@@ -40,7 +41,7 @@ public class PlanController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/plans")
+    @DeleteMapping
     public ResponseEntity deletePlan(@PathVariable long id) {
         if (repository.findById(id).isPresent()) {
             repository.deleteById(id);

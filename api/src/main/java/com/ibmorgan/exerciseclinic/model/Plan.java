@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "plans")
@@ -19,6 +21,10 @@ public class Plan {
     @OneToMany(mappedBy = "plan")
     @JsonIgnoreProperties("plan")
     private List<PlanExercise> planExercises = new ArrayList<>();
+
+    @OneToMany(mappedBy = "plan")
+    @JsonIgnoreProperties("plan")
+    private Set<PatientPlan> patients = new HashSet<>();
 
     public Plan() {
     }
