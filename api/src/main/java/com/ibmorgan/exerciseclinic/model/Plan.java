@@ -1,26 +1,33 @@
 package com.ibmorgan.exerciseclinic.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "exercises")
-public class Exercise {
+@Table(name = "plans")
+public class Plan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     private String name;
     private String description;
-    private String videoUrl;
 
-    @OneToMany(mappedBy = "exercise")
-    @JsonBackReference
+    @OneToMany(mappedBy = "plan")
+    @JsonIgnoreProperties("plan")
     private List<PlanExercise> planExercises = new ArrayList<>();
+
+    @OneToMany(mappedBy = "plan")
+    @JsonIgnoreProperties("plan")
+    private Set<PatientPlan> patients = new HashSet<>();
+
+    public Plan() {
+    }
 
     public long getId() {
         return id;
@@ -48,13 +55,5 @@ public class Exercise {
 
     public void setPlanExercises(List<PlanExercise> planExercises) {
         this.planExercises = planExercises;
-    }
-
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
     }
 }
